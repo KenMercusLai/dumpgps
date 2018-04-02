@@ -1,0 +1,2 @@
+testpackage == 2.26
+piexif==1.0.13

@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  dumpgps:
+    build: .
+    volumes:
+      - .:/opt
+      - /Volumes/Photo:/opt/Photo
+    # working_dir: /opt/PetHospital
+    # command: ["python", "manage.py", 'runserver', '0.0.0.0:80']

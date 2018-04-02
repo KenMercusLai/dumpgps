@@ -1,0 +1,82 @@
+{
+	"SublimeLinter":
+	{
+		"linters":
+		{
+			"pep257":
+			{
+				"@disable": false,
+				"args":
+				[
+				],
+				"excludes":
+				[
+				]
+			},
+			"pep8":
+			{
+				"@disable": false,
+				"args":
+				[
+					"--config=.pep8rc"
+				],
+				"excludes":
+				[
+				],
+				"ignore": "",
+				"select": ""
+			},
+			"pylint":
+			{
+				"@disable": false,
+				"args":
+				[
+				],
+				"disable": "",
+				"enable": "",
+				"excludes":
+				[
+				],
+				"rcfile": ".pylintrc"
+			}
+		}
+	},
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "\"python\" -u \"$file\""
+		}
+	],
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				".coverage",
+				"*.sublime-workspace",
+				"README-*.html",
+				".project",
+				".pydevproject"
+			],
+			"folder_exclude_patterns":
+			[
+				".*",
+				"__pycache__",
+				"build",
+				"dist",
+				"env",
+				"*.egg-info",
+				"htmlcov"
+			],
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"tab_size": 4,
+		"translate_tabs_to_spaces": true
+	}
+}
