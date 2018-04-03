@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta
-from math import cos, radians, sin, atan2, sqrt
+from math import atan2, cos, radians, sin, sqrt
 
 import piexif
 
@@ -27,7 +27,6 @@ def list_files(dir_name, file_name, recursive=False):
 
     gps_info = []
     for i in files:
-        print(i)
         try:
             gps_info.append(exif(i))
         except piexif._exceptions.InvalidImageDataError:

@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-
-"""Sample package entry point."""
-
-import sys
+import click
+from dumpgps import list_files
 
 
-def main():
-    sys.stdout.write("Hello, world!\n")
+@click.command()
+@click.argument('dir_name')
+@click.argument('file_name')
+@click.option('--recursive', is_flag=True)
+def main(dir_name, file_name, recursive=False):
+    list_files(dir_name, file_name, recursive)
 
 
 if __name__ == '__main__':
