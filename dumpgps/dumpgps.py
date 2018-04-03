@@ -96,6 +96,23 @@ def distance_threashold(gps_info, km):
 
 
 def distance(loc1, loc2):
+    """calc distance between two locations.
+
+       each location store in a tuple as (latitude, longitude, altitude),
+       in which each element is a string.
+
+       latitude & longitude follow this format XXX.XXXXXXY,
+       where X are numbers, Y is either S and N or W and E respectively
+
+       altitude is a integer
+
+    Args:
+        loc1 (tuple): first location
+        loc2 (tuple): second location
+
+    Returns:
+        float: distance in km
+    """
     R = 6371
     latitude1 = float(loc1[0][:-1])
     if loc1[0][-1] == 'S':
