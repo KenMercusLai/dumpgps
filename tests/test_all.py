@@ -1,17 +1,8 @@
 """Sample integration test module."""
 # pylint: disable=no-self-use,missing-docstring
 
-import unittest
-
-from dumpgps import sample
+# import unittest
 
 
-class TestDumpgps(unittest.TestCase):
-
-    """Sample integration test class."""
-
-    def test_network_stuff(self):
-        assert sample.function_with_network_stuff() is True
-
-    def test_disk_stuff(self):
-        assert sample.function_with_disk_stuff() is False
+def test_list_a_dir():
+    assert 1 == 1

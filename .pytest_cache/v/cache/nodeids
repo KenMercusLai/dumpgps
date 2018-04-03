@@ -1,0 +1,5 @@
+[
+  "dumpgps/tests/test_dumpgps.py::test_files_in_current_dir",
+  "dumpgps/tests/test_dumpgps.py::test_files_in_subdirs",
+  "tests/test_all.py::test_list_a_dir"
+]

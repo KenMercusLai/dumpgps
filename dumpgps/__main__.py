@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 import click
-from dumpgps import list_files
+try:
+    from .dumpgps import list_files
+except ImportError:
+    from dumpgps import list_files
 
 
 @click.command()
 @click.argument('dir_name')
 @click.argument('file_name')
 @click.option('--recursive', is_flag=True)
-def main(dir_name, file_name, recursive=False):
+def main(dir_name='.', file_name='output.csv', recursive=False):
     list_files(dir_name, file_name, recursive)
 
 

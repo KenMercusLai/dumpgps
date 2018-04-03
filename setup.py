@@ -18,7 +18,7 @@ def check_python_version():
         sys.exit("Python {}.{}+ is required.".format(*MINIMUM_PYTHON_VERSION))
 
 
-def read_package_variable(key):
+def read_package_variable(key):  # pylint: disable=R1710
     """Read the value of a variable from the package without importing."""
     module_path = os.path.join(PACKAGE_NAME, '__init__.py')
     with open(module_path) as module:

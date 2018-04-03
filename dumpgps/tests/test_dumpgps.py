@@ -1,24 +1,20 @@
 """Sample unit test module."""
+# pylint: disable=no-self-use,missing-docstring
+from os.path import abspath, join, basename
 
-import unittest
-
-from dumpgps import sample
+from ..dumpgps import files_in_current_dir, files_in_subdirs
 
 
-class TestDumpgps(unittest.TestCase):
+def test_files_in_current_dir():
+    test_files = ['requirements.txt', 'docker-compose.yml']
+    assert all([True
+                if join(abspath('.'), i) in files_in_current_dir('.') else False
+                for i in test_files])
 
-    """Sample unit test class."""
 
-    def test_dependency_import(self):
-        """Sample test method for dependencies."""
-        try:
-            import testpackage  # pylint: disable=unused-variable
-            assert True
-        except ImportError:
-            self.fail("dependency not installed")
-
-    def test_branch_coverage(self):
-        """Sample test method for branch coverage."""
-        self.assertEqual(sample.function(True), 'True')
-        self.assertEqual(sample.function(False), 'False')
-        self.assertEqual(sample.function(None), 'None')
+def test_files_in_subdirs():
+    test_files = ['requirements.txt', 'docker-compose.yml', 'dumpgps.py']
+    files = [basename(i) for i in files_in_subdirs('.')]
+    assert all([True
+                if i in files else False
+                for i in test_files])

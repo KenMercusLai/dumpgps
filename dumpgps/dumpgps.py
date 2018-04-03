@@ -6,14 +6,30 @@ import piexif
 
 
 def files_in_current_dir(dir_name):
+    """list all files in a dir.
+
+    Args:
+        dir_name (str): path to a dir
+
+    Returns:
+        list: files in a dir.
+    """
     return [os.path.abspath(os.path.join(dir_name, x))
             for x in os.listdir(dir_name)
             if os.path.isfile(os.path.abspath(os.path.join(dir_name, x)))]
 
 
 def files_in_subdirs(dir_name):
+    """list all files in a dir with all sub dirs.
+
+    Args:
+        dir_name (str): path to a dir
+
+    Returns:
+        list: files in a dir.
+    """
     ret = []
-    for r, d, f in os.walk(dir_name):
+    for r, _, f in os.walk(dir_name):
         for file in f:
             ret.append(os.path.abspath(os.path.join(r, file)))
     return ret
@@ -29,7 +45,7 @@ def list_files(dir_name, file_name, recursive=False):
     for i in files:
         try:
             gps_info.append(exif(i))
-        except piexif._exceptions.InvalidImageDataError:
+        except piexif.InvalidImageDataError:
             pass
 
     gps_info = distance_threashold(sorted(gps_info), 10)
@@ -40,7 +56,9 @@ def list_files(dir_name, file_name, recursive=False):
 def save(gps_info, file_name):
     with open(file_name, 'w') as f:
         counter = 1
-        f.write('INDEX,TAG,DATE,TIME,LATITUDE N/S,LONGITUDE E/W,HEIGHT,SPEED,HEADING,VOX\n')
+        header = 'INDEX,TAG,DATE,TIME,LATITUDE N/S,'
+        header += 'LONGITUDE E/W,HEIGHT,SPEED,HEADING,VOX\n'
+        f.write(header)
         for i in gps_info:
             f.write('{},T,{},{},{},{},{},0,0\n'.format(counter, i[0][0],
                                                        i[0][1], i[1][0],
@@ -65,13 +83,15 @@ def distance_threashold(gps_info, km):
             end += 1
     ret.append(gps_info[start:end])
 
-    for i in range(len(ret)):
-        if len(ret[i]) == 1:
-            new_record = ret[i][0]
-            new_time = datetime.strptime(new_record[0][0] + new_record[0][1], '%y%m%d%H%M%S')
+    for index, item in enumerate(ret):
+        if len(item) == 1:
+            new_record = item[0]
+            new_time = datetime.strptime(new_record[0][0] + new_record[0][1],
+                                         '%y%m%d%H%M%S')
             new_time += timedelta(seconds=1)
-            new_record = ((new_time.strftime('%y%m%d'), new_time.strftime('%H%M%S')), new_record[1])
-            ret[i] = [ret[i][0], new_record]
+            new_record = ((new_time.strftime('%y%m%d'),
+                           new_time.strftime('%H%M%S')), new_record[1])
+            ret[index] = [item[0], new_record]
     return ret
 
 
@@ -96,7 +116,9 @@ def distance(loc1, loc2):
     latitude2 = radians(latitude2)
     longitude2 = radians(longitude2)
 
-    a = sin((latitude2 - latitude1) / 2) ** 2 + cos(latitude1) * cos(latitude2) * sin ((longitude2 - longitude1) / 2) ** 2
+    a = (sin((latitude2 - latitude1) / 2) ** 2 +
+         cos(latitude1) * cos(latitude2) *
+         sin((longitude2 - longitude1) / 2) ** 2)
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     d = R * c
     return d
@@ -106,7 +128,7 @@ def exif(img_filename):
     exif_dict = piexif.load(img_filename)
     gps_info = exif_dict['GPS']
     if 2 not in gps_info or 4 not in gps_info:
-        raise piexif._exceptions.InvalidImageDataError
+        raise piexif.InvalidImageDataError
 
     shot_time = get_photo_time(img_filename)
     return shot_time, convert_gps2decimal(gps_info)
@@ -118,7 +140,7 @@ def get_photo_time(img_filename):
         exif_ifd = exif_dict['Exif']
         shot_time = min(exif_ifd[36867], exif_ifd[36868]).decode('ascii')
         ret = datetime.strptime(shot_time, '%Y:%m:%d %H:%M:%S')
-    except:
+    except piexif.InvalidImageDataError:
         try:
             gps_info = exif_dict['GPS']
             ret = convert_gpstime2UTC(gps_info)
